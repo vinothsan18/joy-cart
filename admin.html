@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy Cart — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #111128;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-glass: rgba(255, 255, 255, 0.06);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-primary: #f0f0f5;
+            --text-secondary: #9d9db5;
+            --text-muted: #6b6b8a;
+            --accent-1: #ff6b9d;
+            --accent-2: #c44dff;
+            --accent-3: #6c63ff;
+            --gradient-1: linear-gradient(135deg, #ff6b9d, #c44dff);
+            --gradient-2: linear-gradient(135deg, #6c63ff, #3b82f6);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        /* ─── LOGIN SCREEN ───────────────────────── */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at 30% 50%, rgba(108, 99, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(255, 107, 157, 0.08) 0%, transparent 50%),
+                var(--bg-primary);
+            padding: 24px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 56px 48px;
+            width: 100%;
+            max-width: 440px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 0.6s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .login-logo .icon {
+            font-size: 3rem;
+        }
+
+        .login-logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .login-logo .accent {
+            color: var(--accent-1);
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 36px;
+        }
+
+        .login-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(108, 99, 255, 0.1);
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--accent-3);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-3);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+            box-shadow: 0 4px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.5);
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .login-footer a {
+            color: var(--accent-3);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .login-footer a:hover {
+            color: var(--accent-1);
+        }
+
+        /* ─── DASHBOARD ──────────────────────────── */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dash-topbar {
+            background: rgba(17, 17, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dash-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .dash-brand .accent {
+            color: var(--accent-1);
+        }
+
+        .dash-brand .badge {
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            background: var(--gradient-2);
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .dash-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dash-user-info {
+            text-align: right;
+        }
+
+        .dash-user-info strong {
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .dash-user-info span {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .dash-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 50px;
+            color: #ef4444;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .dash-body {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dash-title {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .dash-desc {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 28px 24px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .stat-card .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .toolbar h3 {
+            font-size: 1.2rem;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px 16px 10px 40px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+            width: 260px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b6b8a' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.44.856a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 14px center;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-3);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-select option {
+            background: var(--bg-secondary);
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: var(--gradient-2);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .delete-all-btn {
+            padding: 10px 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 50px;
+            color: #ef4444;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .delete-all-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Table */
+        .table-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .booking-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .booking-table thead {
+            background: rgba(108, 99, 255, 0.08);
+        }
+
+        .booking-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .booking-table td {
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-glass);
+            vertical-align: top;
+        }
+
+        .booking-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .booking-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .booking-id {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--accent-3);
+            font-size: 0.85rem;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .client-email {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .service-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(108, 99, 255, 0.1);
+            border: 1px solid rgba(108, 99, 255, 0.15);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            color: var(--accent-3);
+            margin: 2px 2px;
+            white-space: nowrap;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .status-new {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .action-btn.confirm:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        .action-btn.cancel:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* Detail Modal */
+        .detail-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .detail-modal.active {
+            display: flex;
+        }
+
+        .detail-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            max-width: 560px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalPop 0.4s ease;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .detail-header h3 {
+            font-size: 1.4rem;
+        }
+
+        .detail-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .detail-close:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .detail-label {
+            width: 140px;
+            flex-shrink: 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dash-topbar {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .dash-body {
+                padding: 20px 16px;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar-actions {
+                flex-wrap: wrap;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .table-wrap {
+                overflow-x: auto;
+            }
+
+            .booking-table {
+                min-width: 800px;
+            }
+
+            .login-card {
+                padding: 40px 28px;
+            }
+
+            .detail-content {
+                padding: 28px;
+            }
+
+            .dash-user-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════ LOGIN SCREEN ═══════════ -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="icon">🎉</div>
+                <h1>Joy<span class="accent">Cart</span></h1>
+            </div>
+            <p class="login-subtitle">Admin Control Panel</p>
+            <div class="login-badge">🔒 Secure Admin Access</div>
+
+            <div class="login-error" id="loginError">
+                ❌ Invalid username or password. Please try again.
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="adminUser" placeholder="Enter admin username" autocomplete="username"
+                            required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔑</span>
+                        <input type="password" id="adminPass" placeholder="Enter admin password"
+                            autocomplete="current-password" required>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">🚀 Sign In to Dashboard</button>
+            </form>
+
+            <div class="login-footer">
+                <a href="index.html">← Back to Joy Cart Website</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ DASHBOARD ═══════════ -->
+    <div class="dashboard" id="dashboard">
+        <!-- Top Bar -->
+        <div class="dash-topbar">
+            <div class="dash-brand">
+                🎉 Joy<span class="accent">Cart</span>
+                <span class="badge">ADMIN</span>
+            </div>
+            <div class="dash-user">
+                <div class="dash-user-info">
+                    <strong id="adminNameDisplay">Admin</strong>
+                    <span>Super Administrator</span>
+                </div>
+                <div class="dash-avatar">AD</div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Body -->
+        <div class="dash-body">
+            <h2 class="dash-title">📋 Booking Dashboard</h2>
+            <p class="dash-desc">Manage all client birthday event bookings from here.</p>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-icon">📦</span>
+                    <div class="stat-value" id="totalBookings">0</div>
+                    <div class="stat-label">Total Bookings</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🆕</span>
+                    <div class="stat-value" id="newBookings">0</div>
+                    <div class="stat-label">New / Pending</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">✅</span>
+                    <div class="stat-value" id="confirmedBookings">0</div>
+                    <div class="stat-label">Confirmed</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">❌</span>
+                    <div class="stat-value" id="cancelledBookings">0</div>
+                    <div class="stat-label">Cancelled</div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <h3>All Bookings</h3>
+                <div class="toolbar-actions">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by name, email...">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="new">New</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button class="export-btn" id="exportBtn">📥 Export CSV</button>
+                    <button class="delete-all-btn" id="deleteAllBtn">🗑️ Clear All</button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+                <table class="booking-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Client</th>
+                            <th>Phone</th>
+                            <th>Event Date</th>
+                            <th>Guests</th>
+                            <th>Budget</th>
+                            <th>Services</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📭</div>
+                    <h3>No Bookings Yet</h3>
+                    <p>When clients submit booking requests from the website, they'll show up here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="detail-modal" id="detailModal">
+        <div class="detail-content">
+            <div class="detail-header">
+                <h3>📋 Booking Details</h3>
+                <button class="detail-close" id="detailClose">✕</button>
+            </div>
+            <div id="detailBody"></div>
+        </div>
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════════════
+           JOY CART ADMIN — Login & Dashboard Logic
+           ═══════════════════════════════════════════════════ */
+
+        // ─── ADMIN CREDENTIALS DATABASE ─────────────────
+        const ADMIN_DB = [
+            { username: 'admin', password: 'admin@123', name: 'Admin' },
+            { username: 'joycart', password: 'joy@2026', name: 'Joy Cart Manager' }
+        ];
+
+        // ─── STATE ──────────────────────────────────────
+        let isLoggedIn = sessionStorage.getItem('jc_admin_logged') === 'true';
+        let currentAdmin = sessionStorage.getItem('jc_admin_name') || '';
+
+        // ─── DOM ────────────────────────────────────────
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Init: check login state
+        if (isLoggedIn) showDashboard();
+
+        // ─── LOGIN ──────────────────────────────────────
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value.trim();
+            const pass = document.getElementById('adminPass').value;
+
+            const admin = ADMIN_DB.find(a =>
+                a.username === user && a.password === pass
+            );
+
+            if (admin) {
+                sessionStorage.setItem('jc_admin_logged', 'true');
+                sessionStorage.setItem('jc_admin_name', admin.name);
+                currentAdmin = admin.name;
+                loginError.style.display = 'none';
+                showDashboard();
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+
+        // ─── LOGOUT ─────────────────────────────────────
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('jc_admin_logged');
+            sessionStorage.removeItem('jc_admin_name');
+            isLoggedIn = false;
+            dashboard.style.display = 'none';
+            loginScreen.style.display = 'flex';
+        });
+
+        // ─── SHOW DASHBOARD ─────────────────────────────
+        function showDashboard() {
+            loginScreen.style.display = 'none';
+            dashboard.style.display = 'block';
+            document.getElementById('adminNameDisplay').textContent = currentAdmin;
+            loadBookings();
+        }
+
+        // ─── BOOKINGS DATA ──────────────────────────────
+        function getBookings() {
+            return JSON.parse(localStorage.getItem('jc_bookings') || '[]');
+        }
+
+        function saveBookings(bookings) {
+            localStorage.setItem('jc_bookings', JSON.stringify(bookings));
+        }
+
+        function loadBookings() {
+            const bookings = getBookings();
+            updateStats(bookings);
+            renderTable(bookings);
+        }
+
+        function updateStats(bookings) {
+            document.getElementById('totalBookings').textContent = bookings.length;
+            document.getElementById('newBookings').textContent = bookings.filter(b => b.status === 'new').length;
+            document.getElementById('confirmedBookings').textContent = bookings.filter(b => b.status === 'confirmed').length;
+            document.getElementById('cancelledBookings').textContent = bookings.filter(b => b.status === 'cancelled').length;
+        }
+
+        function renderTable(bookings) {
+            const tbody = document.getElementById('bookingsTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            let filtered = bookings;
+
+            if (search) {
+                filtered = filtered.filter(b =>
+                    b.name.toLowerCase().includes(search) ||
+                    b.email.toLowerCase().includes(search) ||
+                    b.phone.includes(search)
+                );
+            }
+
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(b => b.status === statusFilter);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            tbody.innerHTML = filtered.map((b, i) => `
+            <tr>
+                <td><span class="booking-id">#JC${String(b.id).padStart(4, '0')}</span></td>
+                <td>
+                    <div class="client-name">${escapeHTML(b.name)}</div>
+                    <div class="client-email">${escapeHTML(b.email)}</div>
+                </td>
+                <td>${escapeHTML(b.phone)}</td>
+                <td>${b.date || '—'}</td>
+                <td>${b.guests || '—'}</td>
+                <td>${b.budget || '—'}</td>
+                <td>${(b.services || []).map(s => `<span class="service-tag">${s}</span>`).join(' ')}</td>
+                <td><span class="status-badge status-${b.status}">${b.status.charAt(0).toUpperCase() + b.status.slice(1)}</span></td>
+                <td>
+                    <div class="action-btns">
+                        <button class="action-btn" title="View Details" onclick="viewDetail(${b.id})">👁️</button>
+                        <button class="action-btn confirm" title="Confirm" onclick="updateStatus(${b.id},'confirmed')">✅</button>
+                        <button class="action-btn cancel" title="Cancel" onclick="updateStatus(${b.id},'cancelled')">🚫</button>
+                        <button class="action-btn delete" title="Delete" onclick="deleteBooking(${b.id})">🗑️</button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+        }
+
+        // ─── ACTIONS ────────────────────────────────────
+        function updateStatus(id, status) {
+            const bookings = getBookings();
+            const booking = bookings.find(b => b.id === id);
+            if (booking) {
+                booking.status = status;
+                saveBookings(bookings);
+                loadBookings();
+            }
+        }
+
+        function deleteBooking(id) {
+            if (!confirm('Are you sure you want to delete this booking?')) return;
+            let bookings = getBookings();
+            bookings = bookings.filter(b => b.id !== id);
+            saveBookings(bookings);
+            loadBookings();
+        }
+
+        function viewDetail(id) {
+            const bookings = getBookings();
+            const b = bookings.find(x => x.id === id);
+            if (!b) return;
+
+            const detailBody = document.getElementById('detailBody');
+            detailBody.innerHTML = `
+            <div class="detail-row"><div class="detail-label">Booking ID</div><div class="detail-value">#JC${String(b.id).padStart(4, '0')}</div></div>
+            <div class="detail-row"><div class="detail-label">Client Name</div><div class="detail-value">${escapeHTML(b.name)}</div></div>
+            <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">${escapeHTML(b.email)}</div></div>
+            <div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value">${escapeHTML(b.phone)}</div></div>
+            <div class="detail-row"><div class="detail-label">Event Date</div><div class="detail-value">${b.date || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Guests</div><div class="detail-value">${b.guests || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Budget</div><div class="detail-value">${b.budget || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Services</div><div class="detail-value">${(b.services || []).map(s => `<span class="service-tag">${s}</span>`).join(' ') || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Special Requests</div><div class="detail-value">${escapeHTML(b.specialRequests) || '—'}</div></div>
+            <div class="detail-row"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge status-${b.status}">${b.status.charAt(0).toUpperCase() + b.status.slice(1)}</span></div></div>
+            <div class="detail-row"><div class="detail-label">Booked On</div><div class="detail-value">${b.createdAt || '—'}</div></div>
+        `;
+
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        // Close detail modal
+        document.getElementById('detailClose').addEventListener('click', () => {
+            document.getElementById('detailModal').classList.remove('active');
+        });
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') document.getElementById('detailModal').classList.remove('active');
+        });
+
+        // ─── SEARCH & FILTER ────────────────────────────
+        document.getElementById('searchInput').addEventListener('input', () => loadBookings());
+        document.getElementById('statusFilter').addEventListener('change', () => loadBookings());
+
+        // ─── EXPORT CSV ─────────────────────────────────
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const bookings = getBookings();
+            if (bookings.length === 0) { alert('No bookings to export.'); return; }
+
+            const headers = ['ID', 'Name', 'Email', 'Phone', 'Date', 'Guests', 'Budget', 'Services', 'Special Requests', 'Status', 'Booked On'];
+            const rows = bookings.map(b => [
+                `#JC${String(b.id).padStart(4, '0')}`,
+                b.name, b.email, b.phone, b.date, b.guests, b.budget,
+                (b.services || []).join('; '),
+                b.specialRequests || '', b.status, b.createdAt || ''
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(r => {
+                csv += r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `joycart_bookings_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // ─── CLEAR ALL ──────────────────────────────────
+        document.getElementById('deleteAllBtn').addEventListener('click', () => {
+            if (!confirm('⚠️ Are you sure you want to delete ALL bookings? This cannot be undone.')) return;
+            localStorage.removeItem('jc_bookings');
+            loadBookings();
+        });
+
+        // ─── UTILITY ────────────────────────────────────
+        function escapeHTML(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+    </script>
+</body>
+
+</html>
